@@ -1,0 +1,223 @@
+openapi: 3.0.3
+info:
+  title: Library Management API
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/HEITSANTA3/library-management_api/1.0.0
+  description: Mock Server
+paths:
+  /books:
+    get:
+      tags:
+      - books
+      summary: Retrieve a list of books.
+      description: Retrieve all books or filter by `bookName` and/or `releaseDate` range.
+      parameters:
+      - name: bookName
+        in: query
+        description: Filter books by their name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: releaseDate
+        in: query
+        description: Filter books by release date range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: List of books.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    put:
+      tags:
+      - books
+      summary: Update a book.
+      description: Update an existing book. This operation is idempotent.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        "200":
+          description: Book successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    post:
+      tags:
+      - books
+      summary: Add a new book.
+      description: Create a new book resource.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        "201":
+          description: Book successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      tags:
+      - books
+      summary: Delete a book.
+      description: Remove a book by its ID.
+      parameters:
+      - name: id
+        in: query
+        description: ID of the book to delete.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Book successfully deleted.
+  /authors:
+    get:
+      tags:
+      - authors
+      summary: Retrieve a list of authors.
+      description: Retrieve all authors or filter by `authorName`.
+      parameters:
+      - name: authorName
+        in: query
+        description: Filter authors by their name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of authors.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    put:
+      tags:
+      - authors
+      summary: Update an author.
+      description: Update an existing author. This operation is idempotent.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: Author successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    post:
+      tags:
+      - authors
+      summary: Add a new author.
+      description: Create a new author resource.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "201":
+          description: Author successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    delete:
+      tags:
+      - authors
+      summary: Delete an author.
+      description: Remove an author by their ID.
+      parameters:
+      - name: id
+        in: query
+        description: ID of the author to delete.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Author successfully deleted.
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the book.
+          example: 101
+        bookName:
+          type: string
+          description: Name of the book.
+          example: The Great Gatsby
+        author:
+          type: string
+          description: Name of the author.
+          example: F. Scott Fitzgerald
+        pageNumbers:
+          type: integer
+          description: Total number of pages.
+          example: 180
+        topic:
+          type: string
+          description: Topic of the book.
+          example: ROMANCE
+          enum:
+          - ROMANCE
+          - COMEDY
+          - OTHER
+        releaseDate:
+          type: string
+          description: Release date of the book.
+          format: date
+          example: 1925-04-10
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the author.
+          example: 201
+        name:
+          type: string
+          description: Name of the author.
+          example: J.K. Rowling
+        sex:
+          type: string
+          description: Gender of the author.
+          example: F
+          enum:
+          - M
+          - F
