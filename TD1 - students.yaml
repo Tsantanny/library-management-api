@@ -1,0 +1,236 @@
+openapi: 3.0.3
+info:
+  title: Student Group Management API
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/HEITSANTA3/student-management_api/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /groups:
+    get:
+      tags:
+      - groups
+      summary: Retrieve a list of groups.
+      description: Retrieve all groups or filter by `groupName` and/or `groupYear` range.
+      parameters:
+      - name: groupName
+        in: query
+        description: Filter groups by their name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: groupYear
+        in: query
+        description: Filter groups by year range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    put:
+      tags:
+      - groups
+      summary: Update a group.
+      description: Update an existing group.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        "200":
+          description: Group successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    post:
+      tags:
+      - groups
+      summary: Add a new group.
+      description: Create a new group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        "201":
+          description: Group successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    delete:
+      tags:
+      - groups
+      summary: Delete a group.
+      description: Remove a group by its ID.
+      parameters:
+      - name: id
+        in: query
+        description: ID of the group to delete.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Group successfully deleted.
+  /students:
+    get:
+      tags:
+      - students
+      summary: Retrieve a list of students.
+      description: Retrieve all students or filter by `studentName`.
+      parameters:
+      - name: studentName
+        in: query
+        description: Filter students by their name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of students.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    put:
+      tags:
+      - students
+      summary: Update a student.
+      description: Update an existing student.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        "200":
+          description: Student successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+    post:
+      tags:
+      - students
+      summary: Add a new student.
+      description: Create a new student resource.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        "201":
+          description: Student successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+    delete:
+      tags:
+      - students
+      summary: Delete a student.
+      description: Remove a student by their ID.
+      parameters:
+      - name: id
+        in: query
+        description: ID of the student to delete.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Student successfully deleted.
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the group.
+          example: 1
+        groupName:
+          type: string
+          description: Name of the group.
+          example: J1
+        groupYear:
+          type: string
+          description: Year associated with the group.
+          example: "2023"
+        promotion:
+          type: string
+          description: Promotion type.
+          example: J
+          enum:
+          - G
+          - H
+          - J
+          - K
+        studentNb:
+          type: integer
+          description: Number of students in the group.
+          example: 25
+        students:
+          type: array
+          description: List of students in the group.
+          items:
+            $ref: '#/components/schemas/Student'
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the student.
+          example: 1001
+        name:
+          type: string
+          description: Name of the student.
+          example: John Doe
+        sex:
+          type: string
+          description: Gender of the student.
+          example: M
+          enum:
+          - M
+          - F
+        birthdate:
+          type: string
+          description: Birth date of the student.
+          format: date
+          example: 2007-05-15
+        reference:
+          type: string
+          description: Unique reference code for the student.
+          example: STD23000
+        group:
+          type: string
+          description: Group name the student belongs to.
+          example: J1
